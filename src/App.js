@@ -10,45 +10,39 @@ const locationParams = [
   { city: 'tokyo', lat: 35.689487, lon: 139.691711 }
 ]
 
-/**
- * Fetch location's weather data.
- * @param {Object} location - the location object.
- * @param {Object} location.lat - the latitude corresponding to the location.
- * @param {Object} location.lon - the longitude corresponding to the location.
- * @returns {Object} data - object received from our fetch call that contains all weather info related to the location passed.
- */
-async function fetchWeather (location) {
-  let url = `${BASE_URL}?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${API_KEY}`
-
-  fetch(url)
-    .then(resp => {
-      if (resp.ok) {
-        console.log('good response')
-        return resp.json()
-      } else {
-        console.log('bad response', resp.status)
-        throw new Error('BAD RESPONSE')
-      }
-    })
-    .then(data => {
-      console.log(data)
-    })
-    .catch(err => {
-      console.error(err)
-    })
-}
-
 function App () {
   const [currentCity, setCurrentCity] = useState(locationParams[0])
   const [weather, setWeather] = useState(null)
 
   // useEffect(() => {
-  //   fetchWeather(locationParams.ottawa)
-  // }, [])
+  //   fetchWeather()
+  // }, [currentCity])
 
   useEffect(() => {
     console.log(currentCity)
   }, [currentCity])
+
+  async function fetchWeather () {
+    let url = `${BASE_URL}?lat=${currentCity.lat}&lon=${currentCity.lon}&units=metric&appid=${API_KEY}`
+
+    fetch(url)
+      .then(resp => {
+        if (resp.ok) {
+          console.log('good response')
+          return resp.json()
+        } else {
+          console.log('bad response', resp.status)
+          throw new Error('BAD RESPONSE')
+        }
+      })
+      .then(data => {
+        console.table(data.daily)
+        setWeather(data.daily)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }
 
   return (
     <div className='App'>
@@ -78,7 +72,31 @@ function Navbar (props) {
 }
 
 function Weather (props) {
-  return <div className='Weather'></div>
+  function formatDate (timestamp) {
+    let dayOfWeekName = new Date(timestamp * 1000).toLocaleString('default', {
+      weekday: 'long'
+    })
+
+    if (Date.now() > timestamp * 1000) {
+      dayOfWeekName = 'Today'
+    }
+
+    return dayOfWeekName
+  }
+
+  return (
+    <div className='Weather'>
+      {props.weather &&
+        props.weather.map((item, index) => {
+          return (
+            <div key={index} id={index} className='day'>
+              <p className='dayOfWeek'>{`${formatDate(item.dt)}`}</p>
+              <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
+            </div>
+          )
+        })}
+    </div>
+  )
 }
 
 export default App
