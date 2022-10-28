@@ -37,6 +37,7 @@ function App () {
       })
       .then(data => {
         console.table(data.daily)
+        data.daily.length = 5
         setWeather(data.daily)
       })
       .catch(err => {
@@ -88,16 +89,34 @@ function Weather (props) {
     <div className='Weather'>
       {props.weather &&
         props.weather.map((item, index) => {
-          return (
-            <div key={index} id={index} className='day'>
-              <p className='dayOfWeek'>{formatDate(item.dt)}</p>
-              <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
-              <img
-                src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
-                alt={item.description}
-              />
-            </div>
-          )
+          if (index === 0) {
+            return (
+              <div key={index} id={index} className='day'>
+                <p className='dayOfWeek'>{formatDate(item.dt)}</p>
+                <div className='wrapper'>
+                  <img
+                    src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
+                    alt={item.description}
+                  />
+                  <div>
+                    <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
+                    <p className='description'>{item.weather[0].main}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          } else {
+            return (
+              <div key={index} id={index} className='day'>
+                <p className='dayOfWeek'>{formatDate(item.dt)}</p>
+                <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
+                <img
+                  src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
+                  alt={item.description}
+                />
+              </div>
+            )
+          }
         })}
     </div>
   )
