@@ -14,9 +14,9 @@ function App () {
   const [currentCity, setCurrentCity] = useState(locationParams[0])
   const [weather, setWeather] = useState(null)
 
-  // useEffect(() => {
-  //   fetchWeather()
-  // }, [currentCity])
+  useEffect(() => {
+    fetchWeather()
+  }, [currentCity])
 
   useEffect(() => {
     console.log(currentCity)
@@ -90,8 +90,12 @@ function Weather (props) {
         props.weather.map((item, index) => {
           return (
             <div key={index} id={index} className='day'>
-              <p className='dayOfWeek'>{`${formatDate(item.dt)}`}</p>
+              <p className='dayOfWeek'>{formatDate(item.dt)}</p>
               <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
+              <img
+                src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
+                alt={item.description}
+              />
             </div>
           )
         })}
