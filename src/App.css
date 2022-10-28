@@ -68,6 +68,12 @@ html {
 
 .Navbar p {
   padding: 1em;
+  cursor: pointer;
+
+  transition: all 0.2s ease-in-out;
+}
+.Navbar p:hover {
+  opacity: 0.33;
 }
 .Navbar p.active {
   font-weight: 700;
@@ -128,4 +134,33 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.Weather:has(.Loader) {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-blue);
+}
+
+.Loader {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 515px;
+}
+
+.Loader img {
+  animation: loading 0.9s ease-in-out infinite normal;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

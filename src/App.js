@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react'
 import './App.css'
+
+import loader from './img/loader.png'
+
+import { useEffect, useState } from 'react'
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall'
 const API_KEY = '580363fa8ea6956daf32ba04f6aa5e61'
@@ -23,6 +26,8 @@ function App () {
   }, [currentCity])
 
   async function fetchWeather () {
+    setWeather(null)
+
     let url = `${BASE_URL}?lat=${currentCity.lat}&lon=${currentCity.lon}&units=metric&appid=${API_KEY}`
 
     fetch(url)
@@ -123,6 +128,15 @@ function Weather (props) {
             )
           }
         })}
+      {!props.weather && <Loader />}
+    </div>
+  )
+}
+
+function Loader () {
+  return (
+    <div className='Loader'>
+      <img src={loader} alt='loading' />
     </div>
   )
 }
