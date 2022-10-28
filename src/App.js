@@ -4,9 +4,9 @@ import loader from './img/loader.png'
 
 import { useEffect, useState } from 'react'
 
+// Constants
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/onecall'
 const API_KEY = '580363fa8ea6956daf32ba04f6aa5e61'
-
 const locationParams = [
   { city: 'ottawa', lat: 45.421532, lon: -75.697189 },
   { city: 'seoul', lat: 37.566536, lon: 126.977966 },
@@ -14,18 +14,18 @@ const locationParams = [
 ]
 
 function App () {
+  //State variables
   const [currentCity, setCurrentCity] = useState(locationParams[0])
   const [weather, setWeather] = useState(null)
 
+  //When the currentCity is changed/selected, fetch data for new location ( fetchWeather() )
   useEffect(() => {
     fetchWeather()
   }, [currentCity])
 
-  useEffect(() => {
-    console.log(currentCity)
-  }, [currentCity])
-
+  //Fetch weather based on the currentCity
   async function fetchWeather () {
+    //Set weather to null (this not only clears data, but makes it so that the Loader displays while fetching data)
     setWeather(null)
 
     let url = `${BASE_URL}?lat=${currentCity.lat}&lon=${currentCity.lon}&units=metric&appid=${API_KEY}`
@@ -33,17 +33,13 @@ function App () {
     fetch(url)
       .then(resp => {
         if (resp.ok) {
-          // console.log('good response')
           return resp.json()
         } else {
-          // console.log('bad response', resp.status)
-          throw new Error('BAD RESPONSE')
+          throw new Error(`Bad response: ${resp.status}`)
         }
       })
       .then(data => {
-        // console.log(data.timezone)
         data.daily.length = 5
-        // console.log(data.daily)
         setWeather(data.daily)
       })
       .catch(err => {
@@ -66,7 +62,6 @@ function App () {
 function Navbar (props) {
   function handleClick (item) {
     props.setCurrentCity(item)
-    // alert(props.currentCity.city)
   }
 
   return (
