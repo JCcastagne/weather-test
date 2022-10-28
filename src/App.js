@@ -75,13 +75,8 @@ function Navbar (props) {
 function Weather (props) {
   function formatDate (timestamp) {
     let dayOfWeekName = new Date(timestamp * 1000).toLocaleString('default', {
-      weekday: 'long'
+      weekday: 'short'
     })
-
-    if (Date.now() > timestamp * 1000) {
-      dayOfWeekName = 'Today'
-    }
-
     return dayOfWeekName
   }
 
@@ -92,14 +87,14 @@ function Weather (props) {
           if (index === 0) {
             return (
               <div key={index} id={index} className='day'>
-                <p className='dayOfWeek'>{formatDate(item.dt)}</p>
+                <p className='dayOfWeek'>Today</p>
                 <div className='wrapper'>
                   <img
                     src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
                     alt={item.description}
                   />
                   <div>
-                    <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
+                    <p className='temp'>{Math.round(item.temp.max)}&deg;</p>
                     <p className='description'>{item.weather[0].main}</p>
                   </div>
                 </div>
@@ -109,11 +104,11 @@ function Weather (props) {
             return (
               <div key={index} id={index} className='day'>
                 <p className='dayOfWeek'>{formatDate(item.dt)}</p>
-                <p className='temp'>{Math.round(item.temp.max)}&deg;C</p>
                 <img
                   src={require(`./img/weatherIcons/${item.weather[0]['icon']}.png`)}
                   alt={item.description}
                 />
+                <p className='temp'>{Math.round(item.temp.max)}&deg;</p>
               </div>
             )
           }
