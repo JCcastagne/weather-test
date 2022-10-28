@@ -38,6 +38,7 @@
 
 :root {
   --bg-blue: #eff6fb;
+  --accent-blue: #6eade6;
   --blue: #c1dce3;
   --black: #333339;
   --white: #ffffff;
@@ -70,7 +71,7 @@ html {
 }
 .Navbar p.active {
   font-weight: 700;
-  color: var(---blue);
+  color: var(--accent-blue);
 }
 
 .Weather {
@@ -115,6 +116,7 @@ html {
 .Weather .day:first-of-type {
   font-size: 1.85em;
   grid-column: 1 / -1;
+  padding: 1.1em 1.1em 0.75em;
 }
 
 .Weather .day:first-of-type img {

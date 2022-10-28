@@ -28,16 +28,17 @@ function App () {
     fetch(url)
       .then(resp => {
         if (resp.ok) {
-          console.log('good response')
+          // console.log('good response')
           return resp.json()
         } else {
-          console.log('bad response', resp.status)
+          // console.log('bad response', resp.status)
           throw new Error('BAD RESPONSE')
         }
       })
       .then(data => {
-        console.table(data.daily)
+        // console.log(data.timezone)
         data.daily.length = 5
+        // console.log(data.daily)
         setWeather(data.daily)
       })
       .catch(err => {
@@ -47,7 +48,11 @@ function App () {
 
   return (
     <div className='App'>
-      <Navbar locations={locationParams} setCurrentCity={setCurrentCity} />
+      <Navbar
+        locations={locationParams}
+        setCurrentCity={setCurrentCity}
+        currentCity={currentCity}
+      />
       <Weather weather={weather} />
     </div>
   )
@@ -56,6 +61,7 @@ function App () {
 function Navbar (props) {
   function handleClick (item) {
     props.setCurrentCity(item)
+    // alert(props.currentCity.city)
   }
 
   return (
@@ -63,7 +69,11 @@ function Navbar (props) {
       {props &&
         props.locations.map((item, index) => {
           return (
-            <p key={index} onClick={() => handleClick(item)}>
+            <p
+              key={index}
+              className={props.currentCity === item ? 'active' : ''}
+              onClick={() => handleClick(item)}
+            >
               {item.city}
             </p>
           )
